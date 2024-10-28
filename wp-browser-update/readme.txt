@@ -2,8 +2,8 @@
 Contributors: MacSteini
 Tags: Browser, Update, Installation, Notice, Warning, Out-dated
 Requires at least: 4.6
-Tested up to: 6.6
-Compatible up to: 6.6
+Tested up to: 6.7
+Compatible up to: 6.7
 Stable tag: trunk
 
 License: GPLv3 or later
@@ -32,7 +32,7 @@ Search for “wp browserupdate” and install the displayed result from your plu
 Don’t forget to activate WP BrowserUpdate afterwards. ;-)
 
 == Changelog ==
-= 4.6.7 =
+= 4.6.8 =
 * Updated (out-dated) browser versions
 
 = 4.6.1 =
