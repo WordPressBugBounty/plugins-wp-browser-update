@@ -1,6 +1,6 @@
 === WP BrowserUpdate ===
 Contributors: MacSteini
-Tags: Browser, Update, Installation, Notice, Warning, Out-dated
+Tags: Browser, Update, Notice, Outdated, Warning
 Requires at least: 4.6
 Tested up to: 6.7
 Compatible up to: 6.7
