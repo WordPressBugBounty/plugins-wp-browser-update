@@ -1,9 +1,9 @@
 <?php
 /*
 Plugin Name: WP BrowserUpdate
-Plugin URI: https://wpbu.codyhq.com/
+Plugin URI: https://wpbu.steinbrecher.co/
 Description: This plugin informs website visitors to update their outdated browser in an unobtrusive way. Go to <a href="http://browserupdate.org/" title="browserupdate.org" target="_blank">browserupdate.org</a> for more information…
-Version: 4.6.8
+Version: 4.6.9
 Author: Marco Steinbrecher
 Author URI: http://profiles.wordpress.org/macsteini
 Requires at least: 4.6
@@ -19,7 +19,7 @@ $wpbu_js = explode(' ', get_option('wp_browserupdate_js', '12 false true top tru
 $browser = 'e:'.$wpbu_vars[0].',f:'.$wpbu_vars[1].',o:'.$wpbu_vars[2].',s:'.$wpbu_vars[3].(!isset($wpbu_vars[4])?'':',c:'.$wpbu_vars[4]);
 
 echo '<script type="text/javascript">
-var $buoop = {required:{'.$browser.'},test:'.(isset($wpbu_js[1]) ? $wpbu_js[1] : '').',newwindow:'.(isset($wpbu_js[2]) ? $wpbu_js[2] : '').',style:"'.(isset($wpbu_js[3]) ? $wpbu_js[3] : '').'",insecure:'.(isset($wpbu_js[4]) ? $wpbu_js[4] : '').',unsupported:'.(isset($wpbu_js[5]) ? $wpbu_js[5] : '').',mobile:'.(isset($wpbu_js[6]) ? $wpbu_js[6] : '').',shift_page_down:'.(isset($wpbu_js[7]) ? $wpbu_js[7] : '').',api:2024.10};
+var $buoop = {required:{'.$browser.'},test:'.(isset($wpbu_js[1]) ? $wpbu_js[1] : '').',newwindow:'.(isset($wpbu_js[2]) ? $wpbu_js[2] : '').',style:"'.(isset($wpbu_js[3]) ? $wpbu_js[3] : '').'",insecure:'.(isset($wpbu_js[4]) ? $wpbu_js[4] : '').',unsupported:'.(isset($wpbu_js[5]) ? $wpbu_js[5] : '').',mobile:'.(isset($wpbu_js[6]) ? $wpbu_js[6] : '').',shift_page_down:'.(isset($wpbu_js[7]) ? $wpbu_js[7] : '').',api:2024.12};
 
 function $buo_f(){
 var e = document.createElement("script");
@@ -86,11 +86,11 @@ $wpbu_shift = $wpbu_js[7];
 
 $wpbu_css_buorg = get_option('wp_browserupdate_css_buorg', '');
 
-$msie_vers = array_merge($morethan, [[127, '<=127'], [120, '<=120'], [110, '<=110'], [100, '<=100'], [90, '<=90']]);
-$firefox_vers = array_merge($morethan, [[131, '<=131'], [100, '<=100'], [90, '<=90'], [80, '<=80'], [70, '<=70']]);
-$opera_vers = array_merge($morethan, [[114, '<=114'], [85, '<=85'], [75, '<=75'], [65, '<=65'], [55, '<=55']]);
+$msie_vers = array_merge($morethan, [[130, '<=130'], [120, '<=120'], [110, '<=110'], [100, '<=100'], [90, '<=90']]);
+$firefox_vers = array_merge($morethan, [[133, '<=133'], [100, '<=100'], [90, '<=90'], [80, '<=80'], [70, '<=70']]);
+$opera_vers = array_merge($morethan, [[115, '<=115'], [85, '<=85'], [75, '<=75'], [65, '<=65'], [55, '<=55']]);
 $safari_vers = array_merge($morethan, [[18, '<=18'], [17, '<=17'], [16, '<=16'], [15, '<=15'], [14, '<=14']]);
-$google_vers = array_merge($morethan, [[130, '<=130'], [120, '<=120'], [110, '<=110'], [100, '<=100'], [90, '<=90']]);
+$google_vers = array_merge($morethan, [[131, '<=131'], [120, '<=120'], [110, '<=110'], [100, '<=100'], [90, '<=90']]);
 
 echo '<div class="wrap"><form action="'.$_SERVER['REQUEST_URI'].'" method="post"><input name="form_nonce" type="hidden" value="'.wp_create_nonce('test-nonce').'" /><h1>WP BrowserUpdate</h1><h2>'.__('Outdated Browser Versions', 'wp-browser-update').'</h2><p>'.__('Please choose which browser version you consider to be outdated (of course, this will include all versions below)… If you leave as is, WP BrowserUpdate uses the default values.', 'wp-browser-update').'</p><p>Microsoft IE/Edge: <select name="wpbu_msie">';
 

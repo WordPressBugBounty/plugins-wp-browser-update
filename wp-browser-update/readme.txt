@@ -32,7 +32,7 @@ Search for “wp browserupdate” and install the displayed result from your plu
 Don’t forget to activate WP BrowserUpdate afterwards. ;-)
 
 == Changelog ==
-= 4.6.8 =
+= 4.6.9 =
 * Updated (out-dated) browser versions
 
 = 4.6.1 =
