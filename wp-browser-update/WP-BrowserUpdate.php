@@ -3,7 +3,7 @@
 Plugin Name: WP BrowserUpdate
 Plugin URI: https://wpbu.steinbrecher.co/
 Description: This plugin notifies website visitors to update their outdated browser in a non-intrusive way. Visit <a href="https://browserupdate.org/" title="browserupdate.org" target="_blank">browserupdate.org</a> for more information…
-Version: 5.0
+Version: 5.0.1
 Author: Marco Steinbrecher
 Author URI: https://profiles.wordpress.org/macsteini
 Requires at least: 4.6
@@ -66,16 +66,16 @@ unset($_POST['wpbu_submit']);
 
 $morethan = [
 ['0', __('Every outdated version', 'wp-browser-update')],
-['-5', __('More than five versions behind', 'wp-browser-update')],
-['-4', __('More than four versions behind', 'wp-browser-update')],
-['-3', __('More than three versions behind', 'wp-browser-update')],
-['-2', __('More than two versions behind', 'wp-browser-update')],
-['-1', __('More than one version behind', 'wp-browser-update')]
+['-5', __('More than five versions outdated', 'wp-browser-update')],
+['-4', __('More than four versions outdated', 'wp-browser-update')],
+['-3', __('More than three versions outdated', 'wp-browser-update')],
+['-2', __('More than two versions outdated', 'wp-browser-update')],
+['-1', __('More than one version outdated', 'wp-browser-update')]
 ];
 
 $version_ranges = [
-'msie' => [132, 120, 110, 100, 90],
-'firefox' => [134, 100, 90, 80, 70],
+'msie' => [133, 120, 110, 100, 90],
+'firefox' => [135, 100, 90, 80, 70],
 'opera' => [116, 85, 75, 65, 55],
 'safari' => [18, 17, 16, 15, 14],
 'google' => [132, 120, 110, 100, 90],

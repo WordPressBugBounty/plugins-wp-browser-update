@@ -44,7 +44,7 @@ If you prefer to install the plugin manually via SFTP or [Virtualmin](https://vi
    - Locate the downloaded ZIP file and extract it on your computer.
    - You should now have a folder named `wp-browser-update`.
 3. **Upload the plugin to your website**
-   - Connect to your website using an FTP client (e. g., [FileZilla](https://filezilla-project.org/ "FileZilla")) or access the File Manager in your hosting control panel.
+   - Connect to your website using an FTP client (e.g., [FileZilla](https://filezilla-project.org/ "FileZilla")) or access the File Manager in your hosting control panel.
    - Navigate to `/wp-content/plugins/` in your WordPress installation directory.
    - Upload the extracted `wp-browser-update` folder.
 4. **Activate the plugin**
@@ -61,17 +61,20 @@ If you have already downloaded the ZIP file, you can install it via the WordPres
 5. Once the installation is complete, click **Activate Plugin** to enable it.
 
 == Changelog ==
+= 5.0.1 =
+* Updated outdated browser versions.
+
 = 5.0 =
 * **Breaking Changes**: PHP 7.4 now required.
-* Updated to follow WordPress coding standards.
-* Improved security and sanitisation.
+* Updated to follow WordPress Coding Standards.
+* Improved security and sanitization.
 * Integrated WordPress Settings API.
-* Added customisation filters.
-* Optimised script and style handling.
+* Added customization filters.
+* Optimized script and style handling.
 * Updated outdated browser versions.
 
 = 4.8.0 =
-* Optimised code.
+* Optimized code.
 * Fixed bug.
 * Updated outdated browser versions.
 
@@ -110,7 +113,7 @@ If you have already downloaded the ZIP file, you can install it via the WordPres
 * Updated outdated browser versions.
 
 = 3.0.3 =
-* Fixed initialisation error.
+* Fixed initialization error.
 * Changed protocol to HTTPS.
 * Updated outdated browser versions.
 
@@ -128,7 +131,7 @@ If you have already downloaded the ZIP file, you can install it via the WordPres
 * Minor fixes.
 
 = 2.2 =
-* Changed licence to GPLv3.
+* Changed license to GPLv3.
 * Added text domain to header.
 * Added POT file for easier translations.
 
@@ -137,7 +140,7 @@ If you have already downloaded the ZIP file, you can install it via the WordPres
 * Minor fixes to notification messages.
 
 = 2.1 =
-* Added JavaScript customisation options.
+* Added JavaScript customization options.
 
 = 2.0.3 =
 * Updated outdated browser versions.
