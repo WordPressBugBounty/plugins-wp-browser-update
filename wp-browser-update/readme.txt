@@ -1,11 +1,11 @@
 === WP BrowserUpdate ===
 Contributors: MacSteini
 Tags: Browser, Update, Notice, Outdated, Warning
-Tested up to: 6.7
-Compatible up to: 6.7
+Tested up to: 6.8
+Compatible up to: 6.8
 Requires at least: 4.6
 Requires PHP: 7.4
-Stable tag: trunk
+Stable tag: 5.0.2
 License: GPLv3 or later
 License URI: https://gnu.org/licenses/gpl
 
@@ -23,7 +23,7 @@ Want to help translate this plugin? Visit the [WordPress Translation Project](ht
 - Requires **PHP 7.4** or newer.
 - Ensure your hosting is updated to PHP 7.4 before upgrading to version 5.0 or newer.
 - Servers running older PHP versions are no longer supported.
-  - If your server is running an earlier PHP version, please download [version 4.8.0](https://downloads.wordpress.org/plugin/wp-browser-update.4.8.0.zip "Download WP BrowserUpdate from WordPress.org").
+  - If your server is running an earlier PHP version, please download [version 4.8.1](https://downloads.wordpress.org/plugin/wp-browser-update.4.8.1.zip "Download WP BrowserUpdate from WordPress.org").
 
 == Installation ==
 
@@ -61,7 +61,7 @@ If you have already downloaded the ZIP file, you can install it via the WordPres
 5. Once the installation is complete, click **Activate Plugin** to enable it.
 
 == Changelog ==
-= 5.0.1 =
+= 5.0.2 =
 * Updated outdated browser versions.
 
 = 5.0 =
@@ -71,6 +71,9 @@ If you have already downloaded the ZIP file, you can install it via the WordPres
 * Integrated WordPress Settings API.
 * Added customization filters.
 * Optimized script and style handling.
+* Updated outdated browser versions.
+
+= 4.8.1 =
 * Updated outdated browser versions.
 
 = 4.8.0 =

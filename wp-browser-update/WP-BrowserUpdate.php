@@ -3,7 +3,7 @@
 Plugin Name: WP BrowserUpdate
 Plugin URI: https://wpbu.steinbrecher.co/
 Description: This plugin notifies website visitors to update their outdated browser in a non-intrusive way. Visit <a href="https://browserupdate.org/" title="browserupdate.org" target="_blank">browserupdate.org</a> for more information…
-Version: 5.0.1
+Version: 5.0.2
 Author: Marco Steinbrecher
 Author URI: https://profiles.wordpress.org/macsteini
 Requires at least: 4.6
@@ -17,7 +17,7 @@ define('MIN_PHP_VERSION', '7.4');
 
 if (version_compare(PHP_VERSION, MIN_PHP_VERSION, '<')) {
 add_action('admin_notices', function () {
-echo '<div class="notice notice-error"><p><strong>'.sprintf(esc_html__('Your PHP v%s is outdated: This plugin requires PHP v%s or higher. Please update your PHP version or %s for compatibility with older PHP versions…', 'wp-browser-update'), esc_html(PHP_VERSION), esc_html(MIN_PHP_VERSION), '<a href="https://downloads.wordpress.org/plugin/wp-browser-update.4.8.0.zip" rel="noopener">'.esc_html__('download plugin version 4.8.0', 'wp-browser-update').'</a>').'</strong></p></div>';
+echo '<div class="notice notice-error"><p><strong>'.sprintf(esc_html__('Your PHP v%s is outdated: This plugin requires PHP v%s or higher. Please update your PHP version or %s for compatibility with older PHP versions…', 'wp-browser-update'), esc_html(PHP_VERSION), esc_html(MIN_PHP_VERSION), '<a href="https://downloads.wordpress.org/plugin/wp-browser-update.4.8.1.zip" rel="noopener">'.esc_html__('download plugin version 4.8.1', 'wp-browser-update').'</a>').'</strong></p></div>';
 });
 deactivate_plugins(plugin_basename(__FILE__));
 return;
@@ -28,7 +28,7 @@ $wpbu_vars = explode(' ', get_option('wp_browserupdate_browsers', '0 0 0 0 0'));
 $wpbu_js = explode(' ', get_option('wp_browserupdate_js', '12 false true top true true true true'));
 $browser = 'e:'.$wpbu_vars[0].',f:'.$wpbu_vars[1].',o:'.$wpbu_vars[2].',s:'.$wpbu_vars[3].(!isset($wpbu_vars[4])?'':',c:'.$wpbu_vars[4]);
 echo '<script>
-var $buoop = {required:{e:'.$wpbu_vars[0].',f:'.$wpbu_vars[1].',o:'.$wpbu_vars[2].',s:'.$wpbu_vars[3].(!isset($wpbu_vars[4])?'':',c:'.$wpbu_vars[4]).'},test:'.($wpbu_js[1] ?? '').',newwindow:'.($wpbu_js[2] ?? '').',style:"'.($wpbu_js[3] ?? '').'",insecure:'.($wpbu_js[4] ?? '').',unsupported:'.($wpbu_js[5] ?? '').',mobile:'.($wpbu_js[6] ?? '').',shift_page_down:'.($wpbu_js[7] ?? '').',api:2025.01};
+var $buoop = {required:{e:'.$wpbu_vars[0].',f:'.$wpbu_vars[1].',o:'.$wpbu_vars[2].',s:'.$wpbu_vars[3].(!isset($wpbu_vars[4])?'':',c:'.$wpbu_vars[4]).'},test:'.($wpbu_js[1] ?? '').',newwindow:'.($wpbu_js[2] ?? '').',style:"'.($wpbu_js[3] ?? '').'",insecure:'.($wpbu_js[4] ?? '').',unsupported:'.($wpbu_js[5] ?? '').',mobile:'.($wpbu_js[6] ?? '').',shift_page_down:'.($wpbu_js[7] ?? '').',api:2025.04};
 
 function $buo_f(){
 var e = document.createElement("script");
@@ -74,11 +74,11 @@ $morethan = [
 ];
 
 $version_ranges = [
-'msie' => [133, 120, 110, 100, 90],
-'firefox' => [135, 100, 90, 80, 70],
-'opera' => [116, 85, 75, 65, 55],
+'msie' => [135, 120, 110, 100, 90],
+'firefox' => [137, 120, 100, 80, 60],
+'opera' => [117, 85, 75, 65, 55],
 'safari' => [18, 17, 16, 15, 14],
-'google' => [132, 120, 110, 100, 90],
+'google' => [135, 120, 100, 80, 60],
 ];
 
 $wpbu_vars = explode(' ', get_option('wp_browserupdate_browsers', '0 0 0 0 0'));
