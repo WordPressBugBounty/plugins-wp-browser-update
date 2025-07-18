@@ -5,7 +5,7 @@ Tested up to: 6.8
 Compatible up to: 6.8
 Requires at least: 4.6
 Requires PHP: 7.4
-Stable tag: 5.0.2
+Stable tag: 5.1
 License: GPLv3 or later
 License URI: https://gnu.org/licenses/gpl
 
@@ -61,6 +61,17 @@ If you have already downloaded the ZIP file, you can install it via the WordPres
 5. Once the installation is complete, click **Activate Plugin** to enable it.
 
 == Changelog ==
+= 5.1 =
+* Added:
+    * Support for free-text input of browser versions (replaces dropdown selection)
+    * Browser version check and caching
+    * Cache duration filter: Added a wpbu_browser_version_cache_hours filter to allow developers to adjust the browser version cache duration (default: 6 hours).
+* Changed:
+    * Admin settings page follows WordPress admin standards
+    * Cleaner field structure: Improved markup and consistency of settings form fields
+    * Security: Improved sanitization and nonce handling for all settings fields
+    * Performance: Fewer unnecessary remote lookups when opening the admin settings page
+
 = 5.0.2 =
 * Updated outdated browser versions.
 
