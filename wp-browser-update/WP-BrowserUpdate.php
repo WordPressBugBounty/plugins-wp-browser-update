@@ -3,7 +3,7 @@
 Plugin Name: WP BrowserUpdate
 Plugin URI: https://wpbu.steinbrecher.co/
 Description: This plugin notifies website visitors to update their outdated browser in a non-intrusive way. Visit <a href="https://browserupdate.org/" title="browserupdate.org" target="_blank">browserupdate.org</a> for more information…
-Version: 5.1
+Version: 5.1.1
 Author: Marco Steinbrecher
 Author URI: https://profiles.wordpress.org/macsteini
 Requires at least: 4.6
@@ -29,7 +29,15 @@ curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 curl_setopt($ch, CURLOPT_TIMEOUT, 10);
 curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (compatible; MyBrowserVersionBot/1.0)');
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+
 $data = curl_exec($ch);
+if ($data === false) {
+curl_close($ch);
+return '';
+}
+
 curl_close($ch);
 return $data;
 }
@@ -40,7 +48,7 @@ if (!$html) return;
 
 libxml_use_internal_errors(true);
 $dom = new DOMDocument();
-$dom->loadHTML($html);
+$dom->loadHTML($html, LIBXML_NONET);
 libxml_clear_errors();
 
 $xpath = new DOMXPath($dom);
@@ -64,50 +72,95 @@ if (is_string($version) && strlen($version)<255) set_transient($key, $version, $
 return $version;
 }
 
-function wpbu() {
-$wpbu_vars = explode(' ', get_option('wp_browserupdate_browsers', '0 0 0 0 0'));
-$wpbu_js = explode(' ', get_option('wp_browserupdate_js', '12 false true top true true true true'));
-$browser = 'e:'.$wpbu_vars[0].',f:'.$wpbu_vars[1].',o:'.$wpbu_vars[2].',s:'.$wpbu_vars[3].(!isset($wpbu_vars[4])?'':',c:'.$wpbu_vars[4]);
-echo '<script>
-var $buoop = {required:{e:'.$wpbu_vars[0].',f:'.$wpbu_vars[1].',o:'.$wpbu_vars[2].',s:'.$wpbu_vars[3].(!isset($wpbu_vars[4])?'':',c:'.$wpbu_vars[4]).'},test:'.($wpbu_js[1] ?? '').',newwindow:'.($wpbu_js[2] ?? '').',style:"'.($wpbu_js[3] ?? '').'",insecure:'.($wpbu_js[4] ?? '').',unsupported:'.($wpbu_js[5] ?? '').',mobile:'.($wpbu_js[6] ?? '').',shift_page_down:'.($wpbu_js[7] ?? '').',api:2025.07};
+function wpbu_normalize_version_for_buorg($v) {
+$v = trim((string)$v);
 
-function $buo_f(){
-var e = document.createElement("script");
-e.src = "//browser-update.org/update.min.js";
-document.body.appendChild(e);
-};
-try {document.addEventListener("DOMContentLoaded", $buo_f, false)}
-catch(e){window.attachEvent("onload", $buo_f)}
-</script>';
+if ($v==='') return 0;
+if (preg_match('/^-?\d+$/', $v)) return (int)$v;
+if (preg_match('/^\d+(?:\.\d+)+$/', $v)) return (int) explode('.', $v)[0];
+if (preg_match('/^-?\d+/', $v, $m)) return (int)$m[0];
+
+return 0;
+}
+
+function wpbu() {
+$raw = explode(' ', get_option('wp_browserupdate_browsers', '0 0 0 0 0'));
+$raw = array_pad($raw, 5, '0');
+
+$required = [
+'e' => wpbu_normalize_version_for_buorg($raw[0]),
+'f' => wpbu_normalize_version_for_buorg($raw[1]),
+'o' => wpbu_normalize_version_for_buorg($raw[2]),
+'s' => wpbu_normalize_version_for_buorg($raw[3]),
+'c' => wpbu_normalize_version_for_buorg($raw[4]),
+];
+
+$defaults = ['12', 'false', 'true', 'top', 'true', 'true', 'true', 'true'];
+$js = explode(' ', get_option('wp_browserupdate_js', implode(' ', $defaults)));
+
+$js = array_pad($js, 8, null);
+for ($i = 0; $i < 8; $i++) {
+if ($js[$i] === null || $js[$i] === '') $js[$i] = $defaults[$i];
+}
+
+$reminder = (int)$js[0];
+$test = ($js[1] ?? 'false') === 'true';
+$newwindow = ($js[2] ?? 'true') === 'true';
+$style = in_array(($js[3] ?? 'top'), ['top', 'bottom', 'corner'], true) ? $js[3] : 'top';
+$insecure = ($js[4] ?? 'true') === 'true';
+$unsupported = ($js[5] ?? 'true') === 'true';
+$mobile = ($js[6] ?? 'true') === 'true';
+$shift = ($js[7] ?? 'true') === 'true';
+
+$buoop = [
+'required' => $required,
+'reminder' => $reminder,
+'test' => $test,
+'newwindow' => $newwindow,
+'style' => $style,
+'insecure' => $insecure,
+'unsupported' => $unsupported,
+'mobile' => $mobile,
+'shift_page_down' => $shift,
+'api' => 2026.01,
+];
+
+echo "<script>\nvar \$buoop = " . wp_json_encode($buoop, JSON_UNESCAPED_SLASHES) . ";\nfunction \$buo_f(){var e=document.createElement('script');e.src='//browser-update.org/update.min.js';document.body.appendChild(e);}\ntry{document.addEventListener('DOMContentLoaded', \$buo_f,false)}catch(e){window.attachEvent('onload', \$buo_f)}\n</script>\n";
 }
 
 function wpbu_administration() {
 if (!current_user_can('manage_options')) wp_die(__('You do not have sufficient permissions to access this page.'));
 
-if (isset($_POST['wpbu_submit']) and wp_verify_nonce($_POST['form_nonce'], 'test-nonce')) {
+if (isset($_POST['wpbu_submit']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['form_nonce'] ?? '')), 'test-nonce')) {
 foreach (['wpbu_msie', 'wpbu_firefox', 'wpbu_opera', 'wpbu_safari', 'wpbu_google'] as $field) {
-if (isset($_POST[$field])) $_POST[$field] = preg_replace('/[^0-9.\-]/', '', $_POST[$field]);
+if (!isset($_POST[$field])) continue;
+$_POST[$field] = trim((string) wp_unslash($_POST[$field]));
+$_POST[$field] = preg_replace('/(?!^-)[^0-9.]/', '', $_POST[$field]);
+if (!preg_match('/^-?\d+(\.\d+)*$/', $_POST[$field])) {
+$_POST[$field] = '0';
+}
 }
 
 $fields_to_sanitize = ['wpbu_reminder', 'wpbu_testing', 'wpbu_newwindow', 'wpbu_style', 'wpbu_secis', 'wpbu_unsup', 'wpbu_mobile', 'wpbu_shift'];
 foreach ($fields_to_sanitize as $field) {
-if (isset($_POST[$field])) $_POST[$field] = sanitize_text_field($_POST[$field]);
+if (isset($_POST[$field])) $_POST[$field] = sanitize_text_field(wp_unslash($_POST[$field]));
 }
 
-$_POST['wpbu_css_buorg'] = sanitize_textarea_field($_POST['wpbu_css_buorg']);
+$css = sanitize_textarea_field(wp_unslash($_POST['wpbu_css_buorg'] ?? ''));
 
 $browsers = ['msie' => $_POST['wpbu_msie'] ?? '0', 'firefox'=> $_POST['wpbu_firefox'] ?? '0', 'opera'=> $_POST['wpbu_opera'] ?? '0', 'safari' => $_POST['wpbu_safari'] ?? '0', 'google' => $_POST['wpbu_google'] ?? '0'];
 
-$js_settings = [(int) ($_POST['wpbu_reminder'] ?? 12), sanitize_text_field($_POST['wpbu_testing'] ?? 'false'), sanitize_text_field($_POST['wpbu_newwindow'] ?? 'false'), sanitize_text_field($_POST['wpbu_style'] ?? 'top'), sanitize_text_field($_POST['wpbu_secis'] ?? 'false'), sanitize_text_field($_POST['wpbu_unsup'] ?? 'false'), sanitize_text_field($_POST['wpbu_mobile'] ?? 'false'), sanitize_text_field($_POST['wpbu_shift'] ?? 'false')];
+$js_settings = [(int) ($_POST['wpbu_reminder'] ?? 12), sanitize_text_field(wp_unslash($_POST['wpbu_testing'] ?? 'false')), sanitize_text_field(wp_unslash($_POST['wpbu_newwindow'] ?? 'false')), sanitize_text_field(wp_unslash($_POST['wpbu_style'] ?? 'top')), sanitize_text_field(wp_unslash($_POST['wpbu_secis'] ?? 'false')), sanitize_text_field(wp_unslash($_POST['wpbu_unsup'] ?? 'false')), sanitize_text_field(wp_unslash($_POST['wpbu_mobile'] ?? 'false')), sanitize_text_field(wp_unslash($_POST['wpbu_shift'] ?? 'false'))];
 
 update_option('wp_browserupdate_browsers', implode(' ', $browsers));
 update_option('wp_browserupdate_js', implode(' ', $js_settings));
-update_option('wp_browserupdate_css_buorg', sanitize_textarea_field($_POST['wpbu_css_buorg'] ?? ''));
+update_option('wp_browserupdate_css_buorg', $css);
 
 echo '<div class="updated"><p><strong>'.esc_html__('Settings saved.', 'wp-browser-update').'</strong></p></div>';
 }
 
 $wpbu_vars = explode(' ', get_option('wp_browserupdate_browsers', '0 0 0 0 0'));
+$wpbu_vars = array_pad($wpbu_vars, 5, '0');
 
 $browsers = [
 'msie' => [
@@ -139,9 +192,9 @@ $browsers = [
 'name' => 'Apple Safari',
 'selected' => $wpbu_vars[3],
 'download' => 'https://support.apple.com/102665',
-'url' => 'https://en.wikipedia.org/wiki/Safari_(web_browser)',
-'xpath' => "//table[contains(@class,'infobox')]//tr[th//a[text()='Stable release(s)']]/following-sibling::tr[1]//table[contains(@class, 'infobox-subbox')]//tr[th[text()='macOS']]/td",
-'regex' => '/\d+(\.\d+)+/',
+'url'=> 'https://support.apple.com/en-us/100100',
+'xpath'=> "(//a[starts-with(normalize-space(.), 'Safari ')])[1]",
+'regex'=> '/\d+(?:\.\d+)+/',
 ],
 
 'google' => [
@@ -185,10 +238,6 @@ $browsers[$key]['selected'] = $wpbu_vars[$i] ?? '0';
 }
 }
 
-###
-###
-###
-
 echo '<div class="wrap"><form action="'.esc_url($_SERVER['REQUEST_URI']).'" method="post"><input type="hidden" name="form_nonce" value="'.esc_attr(wp_create_nonce('test-nonce')).'" /><h1>WP BrowserUpdate</h1><h2>'.esc_html__('Outdated Browser Versions', 'wp-browser-update').'</h2><p>'.esc_html__('Select the browser versions you consider outdated (including all earlier versions). If left unchanged, WP BrowserUpdate will use the default settings.', 'wp-browser-update').'</p><p>'.esc_html__('If you set the browser version to 0, a notification will be shown for every outdated browser version.', 'wp-browser-update').'</p>';
 
 $output = '<table class="form-table">';
@@ -199,15 +248,30 @@ if (!empty($browser['url']) && !empty($browser['xpath'])) {
 $regex = isset($browser['regex']) ? $browser['regex'] : '/\d+\.\d+\.\d+\.\d+/';
 $version = wpbu_getversion_cached($browser['url'], $browser['xpath'], $regex);
 }
-$output .= '<tr><th scope="row"><label for="wpbu_'.esc_attr($key).'"><a href="'.$browser['download'].'" target="_blank">'.esc_html($browser['name']).'</a></label></th><td><input type="text" pattern="^[0-9.]+$" name="wpbu_'.esc_attr($key).'" id="wpbu_'.esc_attr($key).'" value="'.esc_attr($browser['selected']).'" title="'.__('Only numbers and dots are allowed', 'wp-browser-update').'" size="12" />';
-if ($version) $output .= ' <small>'.esc_html__('Latest version', 'wp-browser-update').': '.esc_html($version).'</small>';
+
+$selected_raw = trim((string)($browser['selected'] ?? '0'));
+$normalized = wpbu_normalize_version_for_buorg($selected_raw);
+
+$output .= '<tr><th scope="row"><label for="wpbu_'.esc_attr($key).'"><a href="'.$browser['download'].'" target="_blank">'.esc_html($browser['name']).'</a></label></th><td><input type="text" pattern="^-?[0-9]+(\.[0-9]+)*$" name="wpbu_'.esc_attr($key).'" id="wpbu_'.esc_attr($key).'" value="'.esc_attr($browser['selected']).'" title="'.__('Only numbers, dots and an optional leading minus are allowed', 'wp-browser-update').'" size="12" />';
+
+if ($selected_raw === '0') $output .= ' <small>'.esc_html__('Detection: show all outdated versions (default)', 'wp-browser-update').'</small>';
+elseif ($normalized < 0) $output .= ' <small>'.sprintf(esc_html__('Detection: latest − %d major versions', 'wp-browser-update'), abs($normalized)).'</small>';
+else $output .= ' <small>'.sprintf(esc_html__('Detection uses major version: %s', 'wp-browser-update'), esc_html($normalized)).'</small>';
+
+if ($version) $output .= ' <small> — '.esc_html__('Latest version', 'wp-browser-update').': '.esc_html($version).'</small>';
 $output .= '</td></tr>';
 }
 
 echo $output.'</table>';
 
 $wpbu_defaults = ['12', 'false', 'true', 'top', 'true', 'true', 'true', 'true'];
+
 $wpbu_js = explode(' ', get_option('wp_browserupdate_js', implode(' ', $wpbu_defaults)));
+$wpbu_js = array_pad($wpbu_js, 8, null);
+
+for ($i = 0; $i < 8; $i++) {
+if ($wpbu_js[$i] === null || $wpbu_js[$i] === '') $wpbu_js[$i] = $wpbu_defaults[$i];
+}
 
 $wpbu_keys = ['wpbu_reminder', 'wpbu_testing', 'wpbu_newwindow', 'wpbu_style', 'wpbu_secis', 'wpbu_unsup', 'wpbu_mobile', 'wpbu_shift'];
 $wpbu_values = array_combine($wpbu_keys, $wpbu_js);

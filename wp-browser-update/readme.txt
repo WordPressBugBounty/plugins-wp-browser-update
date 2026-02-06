@@ -1,11 +1,11 @@
 === WP BrowserUpdate ===
 Contributors: MacSteini
 Tags: Browser, Update, Notice, Outdated, Warning
-Tested up to: 6.8
-Compatible up to: 6.8
+Tested up to: 6.9
+Compatible up to: 6.9
 Requires at least: 4.6
 Requires PHP: 7.4
-Stable tag: 5.1
+Stable tag: 5.1.1
 License: GPLv3 or later
 License URI: https://gnu.org/licenses/gpl
 
@@ -61,7 +61,7 @@ If you have already downloaded the ZIP file, you can install it via the WordPres
 5. Once the installation is complete, click **Activate Plugin** to enable it.
 
 == Changelog ==
-= 5.1 =
+= 5.1.1 =
 * Added:
     * Support for free-text input of browser versions (replaces dropdown selection)
     * Browser version check and caching
@@ -71,9 +71,8 @@ If you have already downloaded the ZIP file, you can install it via the WordPres
     * Cleaner field structure: Improved markup and consistency of settings form fields
     * Security: Improved sanitization and nonce handling for all settings fields
     * Performance: Fewer unnecessary remote lookups when opening the admin settings page
-
-= 5.0.2 =
-* Updated outdated browser versions.
+* Fixed:
+    * Prevented a frontend "Uncaught Error" caused by invalid/unexpected browser version strings by hardening version parsing and normalization. Thanks to @danyloliptuha for pointing out.
 
 = 5.0 =
 * **Breaking Changes**: PHP 7.4 now required.
