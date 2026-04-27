@@ -19,9 +19,9 @@ Visit [browserupdate.org](https://browserupdate.org/) for more details.
 Want to help translate this plugin? Visit the [WordPress Translation Project](https://translate.wordpress.org/projects/wp-plugins/wp-browser-update).
 
 == Important Notice ==
-**Breaking Changes in Version 5.0**
+**Breaking Changes in Version 5.0.0**
 - Requires **PHP 7.4** or newer.
-- Ensure your hosting is updated to PHP 7.4 before upgrading to version 5.0 or newer.
+- Ensure your hosting is updated to PHP 7.4 before upgrading to version 5.0.0 or newer.
 - Servers running older PHP versions are no longer supported.
   - If your server is running an earlier PHP version, please download [version 4.8.1](https://downloads.wordpress.org/plugin/wp-browser-update.4.8.1.zip "Download WP BrowserUpdate from WordPress.org").
 
@@ -37,14 +37,14 @@ This is the easiest and quickest way to install the plugin:
 6. Once installed, click **Activate** to enable the plugin.
 
 = Manual Installation =
-If you prefer to install the plugin manually via SFTP or [Virtualmin](https://virtualmin.com "Virtualmin"), follow these steps:
+If you prefer to install the plugin manually via SFTP, follow these steps:
 1. **Download the plugin**
    - [Download the latest version](https://downloads.wordpress.org/plugin/wp-browser-update.zip "Download WP BrowserUpdate from WordPress.org") from the WordPress Plugin Directory.
 2. **Extract the plugin files**
    - Locate the downloaded ZIP file and extract it on your computer.
    - You should now have a folder named `wp-browser-update`.
 3. **Upload the plugin to your website**
-   - Connect to your website using an FTP client (e.g., [FileZilla](https://filezilla-project.org/ "FileZilla")) or access the File Manager in your hosting control panel.
+   - Connect to your website using an FTP client (e. g., [FileZilla](https://filezilla-project.org/ "FileZilla")) or access the File Manager in your hosting control panel.
    - Navigate to `/wp-content/plugins/` in your WordPress installation directory.
    - Upload the extracted `wp-browser-update` folder.
 4. **Activate the plugin**
@@ -74,7 +74,7 @@ If you have already downloaded the ZIP file, you can install it via the WordPres
 * Fixed:
     * Prevented a frontend "Uncaught Error" caused by invalid/unexpected browser version strings by hardening version parsing and normalization. Thanks to @danyloliptuha for pointing out.
 
-= 5.0 =
+= 5.0.0 =
 * **Breaking Changes**: PHP 7.4 now required.
 * Updated to follow WordPress Coding Standards.
 * Improved security and sanitization.
@@ -84,9 +84,6 @@ If you have already downloaded the ZIP file, you can install it via the WordPres
 * Updated outdated browser versions.
 
 = 4.8.1 =
-* Updated outdated browser versions.
-
-= 4.8.0 =
 * Optimized code.
 * Fixed bug.
 * Updated outdated browser versions.
@@ -95,33 +92,30 @@ If you have already downloaded the ZIP file, you can install it via the WordPres
 * Removed redundant colons.
 * Updated outdated browser versions.
 
-= 4.6 =
+= 4.6.0 =
 * Fixed Cross-Site Scripting (XSS) vulnerability.
 * Updated outdated browser versions.
 
-= 4.5 =
+= 4.5.0 =
 * Fixed Cross-Site Request Forgery (CSRF) vulnerability.
 * Updated outdated browser versions.
 
-= 4.4.1 =
-* Updated outdated browser versions.
-
-= 4.4 =
+= 4.4.0 =
 * Updated source URL.
 * Updated outdated browser versions.
 
-= 4.3 =
+= 4.3.0 =
 * Fixed plugin activation issue (thanks @Naveen).
 * Updated outdated browser versions.
 
-= 4.0 =
+= 4.0.0 =
 * Fixed bugs (thanks to forum commenters).
 * Updated JavaScript.
 
-= 3.2 =
+= 3.2.0 =
 * Corrected version typo causing plugin issues.
 
-= 3.1 =
+= 3.1.0 =
 * Fixed bugs (thanks @tristanmason).
 * Updated outdated browser versions.
 
@@ -130,20 +124,20 @@ If you have already downloaded the ZIP file, you can install it via the WordPres
 * Changed protocol to HTTPS.
 * Updated outdated browser versions.
 
-= 3.0 =
+= 3.0.0 =
 * Overhauled functions.
 * Updated JavaScript.
 * Updated outdated browser versions.
 
-= 2.4 =
+= 2.4.0 =
 * Fixed functions.
 
-= 2.3 =
+= 2.3.0 =
 * Overhauled functions.
 * Updated translation files.
 * Minor fixes.
 
-= 2.2 =
+= 2.2.0 =
 * Changed license to GPLv3.
 * Added text domain to header.
 * Added POT file for easier translations.
@@ -152,7 +146,7 @@ If you have already downloaded the ZIP file, you can install it via the WordPres
 * Included minified JavaScript.
 * Minor fixes to notification messages.
 
-= 2.1 =
+= 2.1.0 =
 * Added JavaScript customization options.
 
 = 2.0.3 =
@@ -160,9 +154,9 @@ If you have already downloaded the ZIP file, you can install it via the WordPres
 * Added settings link.
 * Minor fixes.
 
-= 2.0 =
+= 2.0.0 =
 * Added admin settings panel.
 * Added uninstall function.
 
-= 1.0 =
+= 1.0.0 =
 * Initial stable version.
